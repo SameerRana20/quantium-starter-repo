@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import pandas as pd
 
@@ -23,9 +23,25 @@ app =Dash(__name__)
 
 app.layout = html.Div([
     html.H1("Pink Morsel Sales Visualizer"),
-    dcc.Graph(figure = chart)
+    html.Div([
+        dcc.Graph(id="sales-graph"),
+        dcc.RadioItems(
+            options=[
+            {"label":"All", "value":"all"},
+            {"label":"North", "value":"north"},
+            {"label":"South", "value":"south"},
+            {"label":"West", "value":"west"},
+            {"label":"East", "value":"east"},
+        ], value="all")
+        ],
+     style= {"display": "flex" , "align-items": "center", "justifyContent": "center","gap": "40px" })
  
 ])
+
+@callback(
+    Output( "sales-graph" ,"chart"),
+    Input("region"))
+)
 
 if __name__ == "__main__": 
     app.run(debug=True)
