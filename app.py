@@ -6,72 +6,44 @@ df = pd.read_csv("data/formated_sales_data.csv")
 df["Date"] = pd.to_datetime(df["Date"])
 
 app = Dash(__name__)
+ 
+app.layout = html.Div(
+    children=[
 
-app.layout = html.Div([
     
-    # Title
-    html.H1(
-        "Pink Morsel Sales Visualizer",
-        style={
-            "textAlign": "center",
-            "marginBottom": "30px",
-            "color": "#333"
-        }
-    ),
+        html.H1(
+            "Pink Morsel Sales Visualizer",
+            id="app-header",
+            style={
+                "textAlign": "center",
+                "marginBottom": "30px",
+                "color": "#333"
+            }
+        ),
 
-    # Main container
-    html.Div([
+ 
+        dcc.Graph(id="sales-graph"),
 
-        # Graph section
-        html.Div([
-            dcc.Graph(id="sales-graph")
-        ],
-        style={
-            "width": "70%",
-            "padding": "20px",
-            "backgroundColor": "white",
-            "borderRadius": "10px",
-            "boxShadow": "0px 0px 10px rgba(0,0,0,0.1)"
-        }),
-
-        # Filter section
-        html.Div([
-            html.H3("Select Region"),
-
-            dcc.RadioItems(
-                id="region",
-                options=[
-                    {"label": "All", "value": "all"},
-                    {"label": "North", "value": "north"},
-                    {"label": "South", "value": "south"},
-                    {"label": "West", "value": "west"},
-                    {"label": "East", "value": "east"},
-                ],
-                value="all",
-                labelStyle={"display": "block", "margin": "10px 0"}
-            )
-        ],
-        style={
-            "width": "20%",
-            "padding": "20px",
-            "backgroundColor": "#f9f9f9",
-            "borderRadius": "10px",
-            "boxShadow": "0px 0px 10px rgba(0,0,0,0.05)"
-        })
-
+    
+        dcc.RadioItems(
+            id="region",
+            options=[
+                {"label": "All", "value": "all"},
+                {"label": "North", "value": "north"},
+                {"label": "South", "value": "south"},
+                {"label": "West", "value": "west"},
+                {"label": "East", "value": "east"},
+            ],
+            value="all",
+            labelStyle={"display": "block", "margin": "10px 0"}
+        )
     ],
     style={
-        "display": "flex",
-        "justifyContent": "center",
-        "gap": "30px"
-    })
-
-],
-style={
-    "backgroundColor": "#f2f2f2",
-    "minHeight": "100vh",
-    "padding": "40px"
-})
+        "backgroundColor": "#f2f2f2",
+        "minHeight": "100vh",
+        "padding": "40px"
+    }
+)
 
 
 @app.callback(
@@ -93,7 +65,7 @@ def update_chart(selected_region):
         x="Date",
         y="Sales",
         title="Pink Morsel Sales",
-         labels={"Date": "Date", "Sales": "Total Sales"}
+        labels={"Date": "Date", "Sales": "Total Sales"}
     )
 
     return fig
